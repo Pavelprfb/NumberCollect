@@ -1,0 +1,42 @@
+*{
+  margin: 0;
+  padding: 0;
+  font-family: Sans-Serif;
+}
+.a100gb{
+  width: 100%;
+  margin: 0 auto 0;
+  border-radius: 5px;
+}
+.perentSobBeboharKari{
+  background: black;
+  color: white;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  position: relative;
+  margin: auto;
+  border-radius: 5px;
+}
+.sobBeboharKari {
+  position: relative;
+  white-space: nowrap;
+  display: inline-block;
+  animation: slide-left 15s linear infinite;
+}
+
+@keyframes slide-left {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+.sokolUser{
+  background: #EE4423;
+  color: white;
+  padding: 5px;
+  margin: 10px auto 10px;
+  border-radius: 5px;
+}

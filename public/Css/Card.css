@@ -1,0 +1,77 @@
+.card-container {
+  max-width: 500px;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+  background: #FFFFFF;
+}
+
+.profile_like_comment_share{
+  display: flex;
+  justify-content: space-between;
+  color: black;
+  padding: 10px 0;
+}
+.profile-pic-img{
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+.profile-pic-like{
+  display: flex;
+  justify-content: center;
+  
+}
+.comment_share{
+  display: flex;
+  justify-content: center;
+}
+
+.like_comment_share{
+  color: black;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+}
+
+.card-item {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 15px;
+}
+
+.profile-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.comment-box {
+  background: #ECEFF1;
+  border-radius: 18px;
+  padding: 10px;
+  max-width: 400px;
+  color: black;
+}
+
+.comment-box p {
+  margin: 5px 0 0 0;
+}
+
+.comment-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 5px;
+  font-size: 13px;
+  color: gray;
+}
+
+.action-btn {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.action-btn:hover {
+  text-decoration: underline;
+}
