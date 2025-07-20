@@ -6,8 +6,9 @@
 .container {
   padding: 20px;
   text-align: center;
-  width: 350px !important;
+  width: 330px !important;
   overflow: hidden;
+  margin: auto;
 }
 
 .free-button{
