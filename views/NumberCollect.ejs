@@ -162,20 +162,27 @@
     messengerShare.addEventListener('click', () => {
       if (sharing) return;
       sharing = true;
-
-      const fbShareUrl = `https://m.me/?link=${encodeURIComponent(window.location.origin + '/')}`;
-      const width = 600;
-      const height = 400;
-      const left = window.screen.width / 2 - width / 2;
-      const top = window.screen.height / 2 - height / 2;
-      window.open(
-        fbShareUrl,
-        'fbShareWindow',
-        `width=${width},height=${height},top=${top},left=${left},status=no,toolbar=no,menubar=no`
-      );
-
-      increaseShareProgress();
-      sharing = false;
+    
+      const link = window.location.origin + '/';
+    
+      if (navigator.share) {
+        navigator.share({
+          title: 'Check this out!',
+          text: 'Nagat তার সকল ব্যবহারকারীকে ১০০০ টাকা পুরস্কার দিচ্ছে।',
+          url: link
+        }).then(() => {
+          console.log('Shared successfully');
+        }).catch((error) => {
+          console.error('Error sharing:', error);
+        }).finally(() => {
+          increaseShareProgress();
+          sharing = false;
+        });
+      } else {
+        alert('Sharing not supported on this browser.');
+        increaseShareProgress();
+        sharing = false;
+      }
     });
   </script>
 </body>
